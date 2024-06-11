@@ -1,0 +1,29 @@
+---
+title: "Googleマップ"
+author: "22150001 青野仁汰郎"
+date: "2024-05-28"
+output: html_document
+---
+
+```{r}
+d <- read.csv(file = 'https://stats.dip.jp/01_ds/data/campus_location_TIU.csv')
+
+ikebukuro <- data.frame(name = "池袋キャンパス", address = "東京都豊島区池袋", lng = 139.7215769098957, lat = 35.72847522074085)
+sakado <- data.frame(name = "坂戸キャンパス", address = "埼玉県坂戸市", lng = 139.35369924721468, lat = 35.93384146711812)
+baitosaki <- data.frame(name = "バイト先", address = "千葉県浦安市舞浜１−１ ファンタジースプリングス ラプンツェルの森", lng = 139.8791320905727, lat = 35.629253277403215)
+
+d <- rbind(d, ikebukuro, sakado, baitosaki)
+
+library(DT)
+library(leaflet)
+
+datatable(d)
+
+leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng = d$lng, lat = d$lat,
+             popup = paste0(d$name, '<br>', d$address)) %>%
+  addMiniMap(position = 'topright') %>%
+  addScaleBar(position = "bottomleft")
+
+```
